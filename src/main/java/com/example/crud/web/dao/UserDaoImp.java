@@ -10,28 +10,21 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 @Repository
-public class UserDaoImp implements UserDao{
+public class UserDaoImp implements UserDao {
 
     @Override
     public void add(User user) {
         entityManager.merge(user);
-     //   entityManager.getTransaction().commit();
     }
 
     @PersistenceContext
     private EntityManager entityManager;
 
-/*    @PersistenceContext
-    public UserDaoImp (EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }*/
 
     @Override
     public void delete(Long id) {
         User  user = entityManager.find(User.class, id);
         entityManager.remove(user);
-/*        entityManager.getTransaction().commit();*/
-
     }
 
     @Override

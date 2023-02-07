@@ -13,12 +13,12 @@ import java.util.List;
 public class UserController {
 
 
-        private final UserService userService;
+    private final UserService userService;
 
-        @Autowired
-        public UserController(UserService userService) {
-            this.userService = userService;
-        }
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @GetMapping("/getAllUsers")
@@ -28,39 +28,39 @@ public class UserController {
         return "startPage";
     }
 
-        @GetMapping(value = "/new")
-        public String printNewUserPage(User user) {
-            return "newUser";
-        }
+    @GetMapping(value = "/new")
+    public String printNewUserPage(User user) {
+        return "newUser";
+    }
 
-        @PostMapping(value = "/new")
-        public String saveUser( User user) {
-            if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
-                return "newUserBadData";
-            }
-            userService.add(user);
-            return "redirect:/start";
+    @PostMapping(value = "/new")
+    public String saveUser( User user) {
+        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
+            return "newUserBadData";
         }
+        userService.add(user);
+        return "redirect:/getAllUsers";
+    }
 
-        @GetMapping("/delete")
-        public String deleteUser(@RequestParam Long id){
-            userService.delete(id);
-            return "redirect:/start";
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam Long id){
+        userService.delete(id);
+        return "redirect:/getAllUsers";
+    }
+
+    @GetMapping("/edit")
+    public String printEditPage(@RequestParam Long id, Model model) {
+        model.addAttribute("user", userService.getById(id));
+
+        return"appdateUser";
+    }
+
+    @PostMapping(value = "/edit")
+    public String editUser( User user) {
+        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
+            return "appdateUserBadData";
         }
-
-        @GetMapping("/edit")
-        public String printEditPage(@RequestParam Long id, Model model) {
-            model.addAttribute("user", userService.getById(id));
-
-            return"appdateUser";
-        }
-
-        @PostMapping(value = "/edit")
-        public String editUser( User user) {
-            if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
-                return "appdateUserBadData";
-            }
-            userService.edit(user);
-            return "redirect:/start";
-        }
+        userService.edit(user);
+        return "redirect:/getAllUsers";
+    }
 }

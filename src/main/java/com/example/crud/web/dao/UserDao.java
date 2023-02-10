@@ -1,5 +1,7 @@
 package com.example.crud.web.dao;
 
+
+import com.example.crud.web.model.Role;
 import com.example.crud.web.model.User;
 
 import java.util.List;
@@ -15,5 +17,9 @@ public interface UserDao {
     public User getById(Long id);
 
     public List<User> getUsers();
+
+    public List<User> findUserByNamelogin(String login);
+
+    public void addRole(User user, Role role);
 
 }

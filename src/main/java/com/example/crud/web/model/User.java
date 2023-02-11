@@ -1,9 +1,12 @@
 package com.example.crud.web.model;
 
+import com.example.crud.web.configs.WebSecurityConfig;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -32,8 +35,12 @@ public class User implements UserDetails {
 
     private String password;
 
+
+    private String notEncodePass;
     @Transient
     private String passwordConfirm;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinTable(
@@ -78,7 +85,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 
     public User() {}
@@ -145,8 +151,17 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
     public String getLogin() {
         return login;
+    }
+
+    public String getNotEncodePass() {
+        return notEncodePass;
+    }
+
+    public void setNotEncodePass(String notEncordPass) {
+        this.notEncodePass = notEncordPass;
     }
 
     @Override

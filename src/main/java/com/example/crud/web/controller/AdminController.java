@@ -31,7 +31,7 @@ public class AdminController {
     public String home(Model model) {
         List<User> listUsers = userService.getUsers();
         model.addAttribute("tableList", listUsers);
-        return "admin/startPage";
+        return "admin/allUsersInfo";
     }
 
     @GetMapping(value = "/new")
@@ -66,7 +66,7 @@ public class AdminController {
     @PostMapping(value = "/edit")
     public String editUser( User user) {
         if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
-            return "appdateUserBadData";
+            return "admin/appdateUserBadData";
         }
         userService.edit(user);
         return "redirect:/admin/getAllUsers";

@@ -1,36 +1,51 @@
 package com.example.crud.web.service;
 
 
+import com.example.crud.web.dao.RoleDao;
 import com.example.crud.web.dao.UserDao;
-import com.example.crud.web.dao.UserRepository;
 import com.example.crud.web.model.Role;
 import com.example.crud.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImp implements UserService{
 
     private UserDao userDao;
 
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    private RoleDao roleDao;
+
 
     @Autowired
-    public UserServiceImp(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserDao userDao, PasswordEncoder passwordEncoder, RoleDao roleDao) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
+        this.roleDao = roleDao;
     }
 
     @Override
     @Transactional
     public void add(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> roleSet = new HashSet<>();
+        for(Role r : user.getRoles()) {
+            Role exist = roleDao.getByFullName(r.getName());
+            if (exist != null) {
+                System.out.println("----------------------------exist = " + exist + "------------------------");
+                roleSet.add(exist);
+            } else {
+                roleSet.add(r);
+            }
+        }
+        user.setRoles(roleSet);
+        user.setPassword(passwordEncoder.encode(user.getNotEncodePass()));
         userDao.add(user);
     }
 
@@ -49,7 +64,7 @@ public class UserServiceImp implements UserService{
     @Override
     @Transactional
     public void edit(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getNotEncodePass()));
         userDao.edit(user);
     }
 

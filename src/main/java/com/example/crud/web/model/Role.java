@@ -19,6 +19,8 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles" )
     private Set<User> users = new HashSet<>();
 
+
+    @Column(unique = true)
     private String name;
 
 
@@ -46,6 +48,10 @@ public class Role implements GrantedAuthority {
     }
 
     public Role() {
+    }
+
+    public Role(String s) {
+        this.name = s;
     }
 
 

@@ -18,4 +18,24 @@ public class RoleDaoImp implements RoleDao{
         Role role = entityManager.find(Role.class, id);
         return role;
     }
+
+    @Override
+    public Role getByShortName(String name) {
+        try {
+            return entityManager.createQuery("Select r from Role r where r.name = :name", Role.class)
+                    .setParameter("name","ROLE_" + name).getResultList().get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    };
+
+    @Override
+    public Role getByFullName(String name) {
+         try {
+            return  entityManager.createQuery("Select r from Role r where r.name = :name", Role.class)
+                    .setParameter("name",name).getResultList().get(0);
+        } catch (IndexOutOfBoundsException e) {
+             return null;
+         }
+    }
 }

@@ -1,8 +1,10 @@
+
 package com.example.crud.web.configs;
 
 
 import com.example.crud.web.model.Role;
 import com.example.crud.web.model.User;
+import com.example.crud.web.service.RoleService;
 import com.example.crud.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -17,12 +19,12 @@ import java.util.Set;
 public class AfterStart {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @Autowired
-    public AfterStart(UserService userService, PasswordEncoder passwordEncoder) {
+    public AfterStart(UserService userService, RoleService roleService) {
+        this.roleService = roleService;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -38,7 +40,7 @@ public class AfterStart {
            user.setLastName("Pisarenko");
            user.setEmail("nikita@gmail.com");
            user.setLogin("root");
-           user.setPassword(passwordEncoder.encode("root"));
+           user.setNotEncodePass("root");
            user.setRoles(Set.of(role, role1));
            userService.add(user);
            System.out.println("------------------------------ADMIN HAS BEEN CREATED--------------");
@@ -49,8 +51,8 @@ public class AfterStart {
            user1.setLastName("Beletsky");
            user1.setEmail("vlad@mail.com");
            user1.setLogin("user");
-           user1.setPassword(passwordEncoder.encode("user"));
-           user1.setRoles(Set.of(role1));
+           user1.setNotEncodePass("user");
+           user1.setRoles(Set.of(roleService.getByShortName("USER")));
            userService.add(user1);
            System.out.println("------------------------------USER HAS BEEN CREATED--------------");
            System.out.println("------------------------------LOGIN = user PASSWORD = user-------------------------");
@@ -58,3 +60,4 @@ public class AfterStart {
 
     }
 }
+

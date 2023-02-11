@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Create user</title>
+</head>
+<body>
+    <form action="#" th:action="@{/admin/new}" th:name="id" th:value="${id}"  th:object="${user}" method="post">
+      <input type="hidden"  th:field="*{id}" id="id" th:value="${id}"/>
+      <label for="firstName">First name</label>
+      <input type="text" th:field="*{firstName}" id="firstName" placeholder="First Name">
+      <label for="lastName">Last name</label>
+      <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+      <label for="email">Email</label>
+      <input type="text" th:field="*{email}" id="email" placeholder="email">
+      <label for="login">Login</label>
+      <input type="text" th:field="*{login}" id="login" placeholder="login">
+      <label for="login">Password</label>
+      <input type="text" th:field="*{notEncodePass}" id="notEncodePass" placeholder="notEncodePass">
+      <label for="login">Roles</label>
+      <input type="text" th:field="*{Roles}" id="Roles" placeholder="Roles">
+      <input type="submit" value="Create new User">
+    </form>
+  <div style="color: crimson">
+     Bad Data, please try again
+  </div>
+</body>
+</html>

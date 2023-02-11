@@ -1,7 +1,9 @@
 package com.example.crud.web.dao;
 
-import org.springframework.stereotype.Repository;
+
+import com.example.crud.web.model.Role;
 import com.example.crud.web.model.User;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,5 +47,21 @@ public class UserDaoImp implements UserDao {
         criteria.from(User.class);
         return entityManager.createQuery(criteria).getResultList();
     }
+
+    @Override
+    public User findUserByNamelogin(String login){
+         try{
+             return entityManager.createQuery("SELECT u from User  u where u.login = :login", User.class).setParameter("login", login).getResultList().get(0);
+        } catch (IndexOutOfBoundsException e) {
+             return null;
+         }
+    }
+
+    @Override
+    public void addRole(User user, Role role) {
+        user.getRoles().add(role);
+        entityManager.merge(user);
+    }
+
 
 }

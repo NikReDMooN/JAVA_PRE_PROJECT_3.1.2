@@ -29,7 +29,7 @@ public class AfterStart {
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
-       if(userService.findUserByNamelogin("root").isEmpty()) {
+       if(userService.findUserByNamelogin("root") == null) {
            System.out.println("------------------------------STARTED TO CREATING ADMIN--------------");
            Role role = new Role();
            role.setName("ROLE_ADMIN");

@@ -1,7 +1,7 @@
 package com.example.crud.web.service;
 
 
-import com.example.crud.web.dao.UserRepository;
+import com.example.crud.web.dao.UserDao;
 import com.example.crud.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,23 +14,23 @@ import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserDetailsServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        System.out.println("-----------------------qdwqd_-----");
-        Optional<User> personOptional = Optional.ofNullable(userRepository.findByLogin(login));
+        User user = userDao.findUserByNamelogin(login);
 
-        if (personOptional.isEmpty()) {
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        System.out.println(personOptional.get());
-        return personOptional.get();
+        return user;
     }
+
 }

@@ -18,7 +18,7 @@ public interface UserDao {
 
     public List<User> getUsers();
 
-    public List<User> findUserByNamelogin(String login);
+    public User findUserByNamelogin(String login);
 
     public void addRole(User user, Role role);
 

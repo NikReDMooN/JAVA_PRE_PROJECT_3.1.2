@@ -31,8 +31,8 @@ public class UserController {
         if (!log.getLogin().equals(login)) {
             return "user/error";
         }
-        List<User> user = userService.findUserByNamelogin(login);
-        model.addAttribute("user", user.get(0));
+        User user = userService.findUserByNamelogin(login);
+        model.addAttribute("user", user);
         return "user/userInfo";
     }
 
@@ -55,7 +55,8 @@ public class UserController {
 
     @PostMapping(value = "/new")
     public String saveUser( User user) {
-        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
+        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")
+        || (user.getRoles() == null) || user.getLogin().equals("") || user.getNotEncodePass().equals("")) {
             return "admin/newUserBadData";
         }
         for(Role r : user.getRoles())
@@ -79,7 +80,8 @@ public class UserController {
 
     @PostMapping(value = "/edit")
     public String editUser( User user) {
-        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
+        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")
+                || (user.getRoles() == null) || user.getLogin().equals("") || user.getNotEncodePass().equals("")) {
             return "admin/appdateUserBadData";
         }
         userService.edit(user);

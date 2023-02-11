@@ -49,9 +49,9 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public List<User> findUserByNamelogin(String login){
+    public User findUserByNamelogin(String login){
          try{
-             return entityManager.createQuery("SELECT u from User  u where u.login = :login", User.class).setParameter("login", login).getResultList();
+             return entityManager.createQuery("SELECT u from User  u where u.login = :login", User.class).setParameter("login", login).getResultList().get(0);
         } catch (IndexOutOfBoundsException e) {
              return null;
          }

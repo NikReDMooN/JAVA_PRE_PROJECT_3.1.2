@@ -6,6 +6,9 @@ import com.example.crud.web.dao.UserDao;
 import com.example.crud.web.model.Role;
 import com.example.crud.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserService {
 
     private UserDao userDao;
 
@@ -31,6 +34,11 @@ public class UserServiceImp implements UserService{
         this.roleDao = roleDao;
     }
 
+
+
+
+
+
     @Override
     @Transactional
     public void add(User user) {
@@ -38,7 +46,6 @@ public class UserServiceImp implements UserService{
         for(Role r : user.getRoles()) {
             Role exist = roleDao.getByFullName(r.getName());
             if (exist != null) {
-                System.out.println("----------------------------exist = " + exist + "------------------------");
                 roleSet.add(exist);
             } else {
                 roleSet.add(r);
@@ -76,7 +83,7 @@ public class UserServiceImp implements UserService{
 
 
     @Override
-    public List<User> findUserByNamelogin(String login) {
+    public User findUserByNamelogin(String login) {
         return userDao.findUserByNamelogin(login);
     }
 

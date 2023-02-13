@@ -38,4 +38,10 @@ public class RoleDaoImp implements RoleDao{
              return null;
          }
     }
+
+    @Override
+    public void add(Role r) {
+        entityManager.merge(r);
+    }
+
 }

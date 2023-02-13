@@ -26,6 +26,8 @@ public class UserDaoImp implements UserDao {
     @Override
     public void delete(Long id) {
         User  user = entityManager.find(User.class, id);
+        user.setRoles(null);
+        entityManager.merge(user);
         entityManager.remove(user);
     }
 
@@ -42,16 +44,13 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public List<User> getUsers() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = builder.createQuery(User.class);
-        criteria.from(User.class);
-        return entityManager.createQuery(criteria).getResultList();
+        return entityManager.createQuery("Select distinct u from User u join fetch u.roles").getResultList();
     }
 
     @Override
     public User findUserByNamelogin(String login){
          try{
-             return entityManager.createQuery("SELECT u from User  u where u.login = :login", User.class).setParameter("login", login).getResultList().get(0);
+             return entityManager.createQuery("SELECT u from User  u  join fetch u.roles where u.login = :login", User.class).setParameter("login", login).getResultList().get(0);
         } catch (IndexOutOfBoundsException e) {
              return null;
          }

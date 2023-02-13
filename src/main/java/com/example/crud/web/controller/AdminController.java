@@ -31,6 +31,9 @@ public class AdminController {
     public String home(Model model) {
         List<User> listUsers = userService.getUsers();
         model.addAttribute("tableList", listUsers);
+        for(User u : listUsers) {
+            System.out.println(u);
+        }
         return "admin/allUsersInfo";
     }
 

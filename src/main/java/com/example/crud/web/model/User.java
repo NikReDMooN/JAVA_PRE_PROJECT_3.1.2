@@ -27,6 +27,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name="age")
+    private Integer age;
+
     @Column(name = "email")
     private String email;
 
@@ -117,6 +120,14 @@ public class User implements UserDetails {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public void setId(Long id) {

@@ -33,7 +33,7 @@ public class UserController {
         }
         User user = userService.findUserByNamelogin(login);
         model.addAttribute("user", user);
-        return "user/userInfo";
+        return "bootstrap/user";
     }
 
 

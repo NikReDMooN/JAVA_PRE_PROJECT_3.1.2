@@ -64,13 +64,23 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        userDao.delete(id);
+    public void delete(User user) {
+        userDao.delete(user);
     }
 
     @Override
     @Transactional
     public void edit(User user) {
+        Set<Role> roleSet = new HashSet<>();
+        for(Role r : user.getRoles()) {
+            Role exist = roleDao.getByFullName(r.getName());
+            if (exist != null) {
+                roleSet.add(exist);
+            } else {
+                roleSet.add(r);
+            }
+        }
+        user.setRoles(roleSet);
         user.setPassword(passwordEncoder.encode(user.getNotEncodePass()));
         userDao.edit(user);
     }

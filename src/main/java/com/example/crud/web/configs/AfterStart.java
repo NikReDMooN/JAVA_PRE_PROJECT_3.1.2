@@ -41,7 +41,8 @@ public class AfterStart {
            user.setEmail("nikita@gmail.com");
            user.setLogin("root");
            user.setNotEncodePass("root");
-           user.setRoles(Set.of(role, role1));
+           user.setAge(22);
+           user.setRoles(Set.of(role));
            userService.add(user);
            System.out.println("------------------------------ADMIN HAS BEEN CREATED--------------");
            System.out.println("------------------------------LOGIN = root PASSWORD = root-----------------------------");
@@ -51,8 +52,9 @@ public class AfterStart {
            user1.setLastName("Beletsky");
            user1.setEmail("vlad@mail.com");
            user1.setLogin("user");
+           user1.setAge(21);
            user1.setNotEncodePass("user");
-           user1.setRoles(Set.of(roleService.getByShortName("USER")));
+           user1.setRoles(Set.of(role1));
            userService.add(user1);
            System.out.println("------------------------------USER HAS BEEN CREATED--------------");
            System.out.println("------------------------------LOGIN = user PASSWORD = user-------------------------");

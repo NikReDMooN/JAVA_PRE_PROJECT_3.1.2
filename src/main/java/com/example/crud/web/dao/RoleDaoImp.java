@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public class RoleDaoImp implements RoleDao{
@@ -30,6 +32,11 @@ public class RoleDaoImp implements RoleDao{
     };
 
     @Override
+    public List<Role> getRoles() {
+        return entityManager.createQuery("Select distinct r from Role r join fetch r.users",Role.class).getResultList();
+    }
+
+    @Override
     public Role getByFullName(String name) {
          try {
             return  entityManager.createQuery("Select r from Role r where r.name = :name", Role.class)
@@ -38,4 +45,10 @@ public class RoleDaoImp implements RoleDao{
              return null;
          }
     }
+
+    @Override
+    public void add(Role r) {
+        entityManager.merge(r);
+    }
+
 }

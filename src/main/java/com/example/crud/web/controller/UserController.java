@@ -33,60 +33,9 @@ public class UserController {
         }
         User user = userService.findUserByNamelogin(login);
         model.addAttribute("user", user);
-        return "user/userInfo";
+        return "bootstrap/user";
     }
 
-
-
-
-
-
-    @GetMapping("/getAllUsers")
-    public String home(Model model) {
-        List<User> listUsers = userService.getUsers();
-        model.addAttribute("tableList", listUsers);
-        return "allUsersInfo";
-    }
-
-    @GetMapping(value = "/new")
-    public String printNewUserPage(User user) {
-        return "admin/newUser";
-    }
-
-    @PostMapping(value = "/new")
-    public String saveUser( User user) {
-        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")
-        || (user.getRoles() == null) || user.getLogin().equals("") || user.getNotEncodePass().equals("")) {
-            return "admin/newUserBadData";
-        }
-        for(Role r : user.getRoles())
-            System.out.println(r);
-        userService.add(user);
-        return "redirect:/admin/getAllUsers";
-    }
-
-    @GetMapping("/delete")
-    public String deleteUser(@RequestParam Long id){
-        userService.delete(id);
-        return "redirect:/admin/getAllUsers";
-    }
-
-    @GetMapping("/edit")
-    public String printEditPage(@RequestParam Long id, Model model) {
-        model.addAttribute("user", userService.getById(id));
-
-        return"admin/appdateUser";
-    }
-
-    @PostMapping(value = "/edit")
-    public String editUser( User user) {
-        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")
-                || (user.getRoles() == null) || user.getLogin().equals("") || user.getNotEncodePass().equals("")) {
-            return "admin/appdateUserBadData";
-        }
-        userService.edit(user);
-        return "redirect:/admin/getAllUsers";
-    }
 
 
 }

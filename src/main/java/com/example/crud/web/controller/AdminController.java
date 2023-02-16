@@ -54,7 +54,9 @@ public class AdminController {
 
     @PostMapping(value = "/new" )
     public String saveUser( User addUser, Model model, @AuthenticationPrincipal User log) {
-        if (addUser.getEmail().equals("") || addUser.getFirstName().equals("") || addUser.getLastName().equals("")) {
+        if (addUser.getEmail().equals("") || addUser.getFirstName().equals("") || addUser.getLastName().equals("")
+                || addUser.getRoles() == null || addUser.getLogin().equals("") || addUser.getNotEncodePass().equals("") ||
+                addUser.getAge() == null) {
             User admin = userService.findUserByNamelogin(log.getLogin());
             List<User> listUsers = userService.getUsers();
             model.addAttribute("tableList", listUsers);
@@ -90,7 +92,9 @@ public class AdminController {
     @PostMapping(value = "/edit")
     public String editUser( User user, Model model, @AuthenticationPrincipal User log) {
         System.out.println("id = "  +  user.getId());
-        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")) {
+        if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("")
+           || user.getRoles() == null || user.getLogin().equals("") || user.getNotEncodePass().equals("") ||
+           user.getAge() == null) {
             User admin = userService.findUserByNamelogin(log.getLogin());
             List<User> listUsers = userService.getUsers();
             model.addAttribute("tableList", listUsers);

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -188,5 +189,16 @@ public class User implements UserDetails {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return firstName.equals(user.firstName) && lastName.equals(user.lastName) && age.equals(user.age) && email.equals(user.email) && login.equals(user.login) && password.equals(user.password);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, age, email, login, password);
+    }
 }

@@ -48,9 +48,9 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User findUserByNamelogin(String login){
+    public User getUserByEmail(String login){
          try{
-             return entityManager.createQuery("SELECT u from User  u  join fetch u.roles where u.login = :login", User.class).setParameter("login", login).getResultList().get(0);
+             return entityManager.createQuery("SELECT u from User  u  join fetch u.roles where u.email = :email", User.class).setParameter("email", login).getResultList().get(0);
         } catch (IndexOutOfBoundsException e) {
              return null;
          }

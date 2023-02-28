@@ -22,22 +22,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
-    private String lastName;
 
-    @Column(name="age")
-    private Integer age;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "login", unique = true)
-    private String login;
+    @Column(name = "age", nullable = false)
+    private int age;
+
 
     private String password;
+
+
 
 
     private String notEncodePass;
@@ -46,7 +47,7 @@ public class User implements UserDetails {
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "User_Role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -67,7 +68,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.login;
+        return this.email;
     }
 
     @Override
@@ -93,9 +94,7 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String firstName, String last_name, String email) {
-        this.firstName = firstName;
-        this.lastName = last_name;
+    public User( String email) {
         this.email = email;
     }
 
@@ -103,13 +102,6 @@ public class User implements UserDetails {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
 
     public String getEmail() {
         return email;
@@ -123,16 +115,14 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setFirstName(String firstName) {
@@ -141,14 +131,6 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public void setPassword(String password) {
@@ -163,10 +145,22 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-
-    public String getLogin() {
-        return login;
+    public void setAge(int age) {
+        this.age = age;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
 
     public String getNotEncodePass() {
         return notEncodePass;
@@ -180,9 +174,6 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", roles='" + roles + '\'' +
                 ", email='" + email + '\'' +
@@ -194,11 +185,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return firstName.equals(user.firstName) && lastName.equals(user.lastName) && age.equals(user.age) && email.equals(user.email) && login.equals(user.login) && password.equals(user.password);
+        return id.equals(user.id) && email.equals(user.email) &&   notEncodePass.equals(user.notEncodePass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, age, email, login, password);
+        return Objects.hash(id, email, firstName, lastName, notEncodePass);
     }
 }

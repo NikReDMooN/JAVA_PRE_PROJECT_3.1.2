@@ -9,7 +9,6 @@ import com.example.crud.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -29,19 +28,18 @@ public class AfterStart {
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
-       if(userService.findUserByNamelogin("root") == null) {
+       if(userService.getUserByEmail("nikita@gmail.com") == null) {
            System.out.println("------------------------------STARTED TO CREATING ADMIN--------------");
            Role role = new Role();
            role.setName("ROLE_ADMIN");
            Role role1 = new Role();
            role1.setName("ROLE_USER");
            User user = new User();
-           user.setFirstName("Nikita");
-           user.setLastName("Pisarenko");
            user.setEmail("nikita@gmail.com");
-           user.setLogin("root");
+           user.setFirstName("Nikita");
+           user.setAge(15);
+           user.setLastName("Pisarenko");
            user.setNotEncodePass("root");
-           user.setAge(22);
            user.setRoles(Set.of(role));
            userService.add(user);
            System.out.println("------------------------------ADMIN HAS BEEN CREATED--------------");
@@ -49,10 +47,9 @@ public class AfterStart {
            System.out.println("------------------------------STARTED TO CREATING USER--------------");
            User user1 = new User();
            user1.setFirstName("Vlad");
-           user1.setLastName("Beletsky");
+           user1.setLastName("Bel");
+           user1.setAge(20);
            user1.setEmail("vlad@mail.com");
-           user1.setLogin("user");
-           user1.setAge(21);
            user1.setNotEncodePass("user");
            user1.setRoles(Set.of(role1));
            userService.add(user1);

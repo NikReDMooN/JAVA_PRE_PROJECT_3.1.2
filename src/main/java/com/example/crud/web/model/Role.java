@@ -61,20 +61,20 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
-    public String toString() {
-        return this.name;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return name.equals(role.name);
+        Role role1 = (Role) o;
+        return id == role1.id && Objects.equals(name, role1.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return name.replace("ROLE_", "");
     }
 }

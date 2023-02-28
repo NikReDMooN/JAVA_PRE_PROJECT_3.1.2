@@ -24,33 +24,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest()
-                .hasAnyRole("USER", "ADMIN")
+                .antMatchers("/login", "/error").permitAll()
+                .antMatchers("/admin/**", "/adminApi/**").hasRole("ADMIN")
+                .antMatchers( "/userApi/**", "/user/**", "/userApi/**",  "/user/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .successHandler(successUserHandler)
-                .permitAll()
+                .failureUrl("/login?error")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login");
-
-    }
-
-    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(getPasswordEncoder());
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }
